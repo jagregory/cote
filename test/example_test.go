@@ -61,6 +61,29 @@ func TestExampleWithSubmissions(t *testing.T) {
 	}
 }
 
+// BenchmarkExample    100000       19925 ns/op
+func BenchmarkExample(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		locals := ExampleTemplateLocals{
+			Submissions: []Submission{
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+				Submission{"http://example.com", "Hello World"},
+			},
+		}
+		ExampleTemplate(locals)
+	}
+}
+
 // diff two strings, ripped from gofmt
 func diff(actual, expected []byte) (data []byte, err error) {
 	f1, err := ioutil.TempFile("", "actual")
