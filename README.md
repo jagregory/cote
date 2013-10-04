@@ -8,7 +8,7 @@ Cote is a template compiler for Go. Use it to precompile HTML (or other) templat
 go get github.com/jagregory/cote
 ```
 
-Coat has an executable `coat` which you'll need to use, make sure it's available on your path (or you know where it is).
+Cote has an executable `cote` which you'll need to use, make sure it's available on your path (or you know where it is).
 
 ## Rationalè / Q&A
 
@@ -37,7 +37,7 @@ Coat has an executable `coat` which you'll need to use, make sure it's available
 
 The best approach to using Cote is to treat it as a pre-compile step.
 
-Put your Coat templates in your package, then run Coat over each one specifying a template name. Do this whenever you change a template.
+Put your Cote templates in your package, then run Cote over each one specifying a template name. Do this whenever you change a template.
 
 ## Examples
 
@@ -47,9 +47,9 @@ Or
 
     ./cote -input=yourtemplate.cote -output=yourtemplate.cote.go
 
-A bit more detailed. If you had a template named *templates/example.cote* containing `<p>Hi <%= locals.Name %></p>`, you could compile it by either piping its content into `coat` and redirecting the output to a file. e.g. `cat templates/example.cote | ./cote -name=example > templates/example.cote.go`
+A bit more detailed. If you had a template named *templates/example.cote* containing `<p>Hi <%= locals.Name %></p>`, you could compile it by either piping its content into `cote` and redirecting the output to a file. e.g. `cat templates/example.cote | ./cote -name=example > templates/example.cote.go`
 
-Or alternatively, you can use `coat` with `-input` and `-output` flags. e.g. `./cote -input=templates/example.cote -output=templates/example.cote.go`
+Or alternatively, you can use `cote` with `-input` and `-output` flags. e.g. `./cote -input=templates/example.cote -output=templates/example.cote.go`
 
 Either approach will produce a template named `example`, you can override this with the `-name` flag. Whatever name you use needs to be a valid Go method name, as it will be the method which you call to render the template.
 
