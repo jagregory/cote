@@ -1,6 +1,8 @@
 # cote - COmpiled TEmplates for Go
 
-Cote is a template compiler for Go. Use it to precompile HTML (or other) templates and embed them in your Go packages.
+Cote is a bare-bones templating language for Go. It does not have an interpreter, or a custom language. It simply mixes Go with HTML (or your other text-based language of choice), and compiles them to pure Go. *Cote is a compile-time template language.*
+
+Templates are written in HTML with Go embedded with `<% %>` and `<%= %>` tags. The `cote` utility converts these templates into Go code files. The generated code is then compiled into your package, and usable without the original HTML files.
 
 ## Install
 
@@ -8,7 +10,7 @@ Cote is a template compiler for Go. Use it to precompile HTML (or other) templat
 go get github.com/jagregory/cote
 ```
 
-Cote has an executable `cote` which you'll need to use, make sure it's available on your path (or you know where it is).
+Cote has an executable `cote` which you'll need to use, make sure it's available on your `PATH` (or you know where it is).
 
 ## Rationalè / Q&A
 
@@ -33,13 +35,40 @@ Cote has an executable `cote` which you'll need to use, make sure it's available
   * Have to regenerate and recompile for every change
   * Can use any valid Go code in your templates!
 
+## Examples
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= locals.Title %></title>
+  </head>
+  <body>
+    <h1><%= locals.Title %></h1>
+    <% if locals.IsHome { %>
+      <p>Welcome home</p>
+    <% } %>
+  </body>
+</html>
+```
+
+```go
+import "templates"
+
+func(w http.ResponseWriter, r *http.Request) {
+  html := templates.Home(HomeLocals{
+    Title: "Our Site",
+    IsHome: true,
+  })
+  w.Write(html)
+}
+```
+
 ## Usage
 
 The best approach to using Cote is to treat it as a pre-compile step.
 
 Put your Cote templates in your package, then run Cote over each one specifying a template name. Do this whenever you change a template.
-
-## Examples
 
     cat yourtemplate.cote | ./cote -name=yourtemplate > yourtemplate.cote.go
 
