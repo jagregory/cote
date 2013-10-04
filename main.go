@@ -15,7 +15,7 @@ var outputFile = flag.String("output", "", "Compiled output path e.g. templates/
 func main() {
 	flag.Parse()
 
-	in, name := readInput()
+	in, name := inputReader()
 	defer in.Close()
 
 	out := outputWriter()
@@ -28,7 +28,7 @@ func main() {
 
 // Reads the input file from the -input flag or Stdin. Exits if
 // no template name given when using stdin, or no input path given.
-func readInput() (f io.ReadCloser, name string) {
+func inputReader() (f io.ReadCloser, name string) {
 	if isUsingStdin() {
 		if *templateName == "" {
 			fmt.Fprintln(os.Stderr, "Template name not specified. Use -name flag.")
@@ -76,6 +76,7 @@ func isUsingStdin() bool {
 	return s.Size() > 0
 }
 
+// Gets an output writer, either a file or Stdout
 func outputWriter() io.WriteCloser {
 	if *outputFile == "" {
 		return os.Stdout
