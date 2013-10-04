@@ -47,9 +47,17 @@ Or
 
     ./cote -input=yourtemplate.cote -output=yourtemplate.cote.go
 
-A bit more detailed. If you had a template named *templates/example.cote* containing `<p>Hi <%= locals.Name %></p>`, you could compile it by either piping its content into `cote` and redirecting the output to a file. e.g. `cat templates/example.cote | ./cote -name=example > templates/example.cote.go`
+A bit more detailed. If you had a template named *templates/example.cote*.
 
-Or alternatively, you can use `cote` with `-input` and `-output` flags. e.g. `./cote -input=templates/example.cote -output=templates/example.cote.go`
+    <p>Hi <%= locals.Name %></p>
+
+You could compile the template by either piping its content into `cote` and redirecting the output to a file.
+
+e.g. `cat templates/example.cote | ./cote -name=example > templates/example.cote.go`
+
+Or alternatively, you can use `cote` with `-input` and `-output` flags.
+
+e.g. `./cote -input=templates/example.cote -output=templates/example.cote.go`
 
 Either approach will produce a template named `example`, you can override this with the `-name` flag. Whatever name you use needs to be a valid Go method name, as it will be the method which you call to render the template.
 
