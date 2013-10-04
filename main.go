@@ -10,15 +10,13 @@ import (
 
 var templateName = flag.String("name", "", "Name of the template, this will be the function name")
 var inputFile = flag.String("input", "", "Template path e.g. templates/example.cote")
+var outputFile = flag.String("output", "", "Compiled output path e.g. templates/example.cote.go")
 
 func main() {
 	flag.Parse()
 
-	var out io.Writer
-
 	in, name := readInput()
-	// TODO: optional output file flag
-	out = os.Stdout
+	out := outputWriter()
 
 	if err := Convert(name, in, out); err != nil {
 		panic(err)
@@ -73,4 +71,16 @@ func isUsingStdin() bool {
 	}
 
 	return s.Size() > 0
+}
+
+func outputWriter() io.Writer {
+	if *outputFile == "" {
+		return os.Stdout
+	}
+
+	w, err := os.Open(*outputFile)
+	if err != nil {
+		panic(err)
+	}
+	return w
 }
