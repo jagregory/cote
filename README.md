@@ -41,33 +41,29 @@ Put your Coat templates in your package, then run Coat over each one specifying 
 
 ## Examples
 
-*templates/example.coat*
+    cat yourtemplate.cote | ./cote -name=yourtemplate > yourtemplate.cote.go
 
-    <p>Hi <%= locals.Name %></p>
+Or
 
-Which can be compiled like so (this'll get easier soon):
+    ./cote -input=yourtemplate.cote -output=yourtemplate.cote.go
 
-```bash
-cat templates/example.coat | ./coat -name=example > templates/example.coat.go
-```
+A bit more detailed. If you had a template named *templates/example.cote* containing `<p>Hi <%= locals.Name %></p>`, you could compile it by either piping its content into `coat` and redirecting the output to a file. e.g. `cat templates/example.cote | ./cote -name=example > templates/example.cote.go`
 
-This will produce a template called `example`.
+Or alternatively, you can use `coat` with `-input` and `-output` flags. e.g. `./cote -input=templates/example.cote -output=templates/example.cote.go`
+
+Either approach will produce a template named `example`, you can override this with the `-name` flag. Whatever name you use needs to be a valid Go method name, as it will be the method which you call to render the template.
 
 ```go
+package templates
+
 example(locals exampleLocals) []byte {
   ...
 }
 ```
 
-You will need to define a `*Locals` struct for each template you use. E.g.
+All templates take a `locals` structure, which you can use within the template to access any variables you need. You will need to declare the structure yourself, with a name of `*templateName*Locals`, e.g. `struct exampleLocals { Name string }`
 
-```go
-struct exampleLocals {
-  Name string
-}
-```
-
-Finally, you can use your template:
+Finally, you can use your template by calling the template method with a locals instance.
 
 ```go
 func(w http.ResponseWriter, r *http.Request) {
@@ -76,4 +72,8 @@ func(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-    <p>Hi James</p>
+This would produce: `<p>Hi James</p>`.
+
+## Known issues
+
+  * No way to handle extra imports (e.g. `include "time"`)
