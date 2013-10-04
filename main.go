@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"unicode"
 )
 
 var templateName = flag.String("name", "", "Name of the template, this will be the function name")
@@ -59,12 +60,12 @@ func inputReader() (f io.ReadCloser, name string) {
 }
 
 // Extract a sensible template name from the file path
-func templateNameFromFilePath(p string) (name string) {
-	name = path.Base(p)
+func templateNameFromFilePath(p string) string {
+	name := path.Base(p)
 	if ext := path.Ext(name); ext != "" {
 		name = name[:len(name)-len(ext)]
 	}
-	return
+	return string(unicode.ToUpper(rune(name[0]))) + name[1:]
 }
 
 func isUsingStdin() bool {

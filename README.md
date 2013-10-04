@@ -53,29 +53,31 @@ A bit more detailed. If you had a template named *templates/example.cote*.
 
 You could compile the template by either piping its content into `cote` and redirecting the output to a file.
 
-e.g. `cat templates/example.cote | ./cote -name=example > templates/example.cote.go`
+e.g. `cat templates/example.cote | ./cote -name=Example > templates/example.cote.go`
 
 Or alternatively, you can use `cote` with `-input` and `-output` flags.
 
 e.g. `./cote -input=templates/example.cote -output=templates/example.cote.go`
 
-Either approach will produce a template named `example`, you can override this with the `-name` flag. Whatever name you use needs to be a valid Go method name, as it will be the method which you call to render the template.
+Either approach will produce a template named `Example`, you can override this with the `-name` flag. Whatever name you use needs to be a valid Go method name, as it will be the method which you call to render the template.
 
 ```go
 package templates
 
-example(locals exampleLocals) []byte {
+func Example(locals exampleLocals) []byte {
   ...
 }
 ```
 
-All templates take a `locals` structure, which you can use within the template to access any variables you need. You will need to declare the structure yourself, with a name of `*templateName*Locals`, e.g. `struct exampleLocals { Name string }`
+All templates take a `locals` structure, which you can use within the template to access any variables you need. You will need to declare the structure yourself, with a name of `*templateName*Locals`, e.g. `struct ExampleLocals { Name string }`
 
 Finally, you can use your template by calling the template method with a locals instance.
 
 ```go
+import "templates"
+
 func(w http.ResponseWriter, r *http.Request) {
-  html := example(exampleLocals{ Name: "James" })
+  html := templates.Example(ExampleLocals{ Name: "James" })
   w.Write(html)
 }
 ```
