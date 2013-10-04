@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>News</title>
+  </head>
+  <body>
+    <h1>Today</h1>
+  <% if len(locals.Submissions) == 0 { %>
+    <p>Nothing has been reported yet.</p>
+  <% } else { %>
+    <ol>
+      <% for _, s := range locals.Submissions { %>
+        <li>
+          <a href="<%= s.Url %>"><%= s.Title %></a>
+        </li>
+      <% } %>
+    </ol>
+  <% } %>
+  </body>
+</html>

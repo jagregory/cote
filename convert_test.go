@@ -16,14 +16,21 @@ func TestPureHtmlOutput(t *testing.T) {
 	buf := bytes.NewBuffer(make([]byte, 0, 1000))
 	Convert("templateName", strings.NewReader(pure), buf)
 
-	expected := "package template\n"
+	expected := "package templates\n"
 	expected += "\n"
-	expected += "func templateName() {\n"
-	expected += "  fmt.Print(`<html>\n"
+	expected += "import (\n"
+	expected += "  \"bytes\"\n"
+	expected += "  \"fmt\"\n"
+	expected += ")\n"
+	expected += "\n"
+	expected += "func templateName(locals templateNameLocals) []byte {\n"
+	expected += "  buf := bytes.NewBuffer(make([]byte, 0, 275))\n"
+	expected += "  fmt.Fprint(buf, `<html>\n"
 	expected += "  <head>\n"
 	expected += "    <title>Hi</title>\n"
 	expected += "  </head>\n"
 	expected += "</html>`);\n"
+	expected += "  return buf.Bytes()\n"
 	expected += "}\n"
 
 	if buf.String() != expected {
@@ -41,14 +48,21 @@ func TestCodeOutput(t *testing.T) {
 	buf := bytes.NewBuffer(make([]byte, 0, 1000))
 	Convert("templateName", strings.NewReader(code), buf)
 
-	expected := "package template\n"
+	expected := "package templates\n"
 	expected += "\n"
-	expected += "func templateName() {\n"
-	expected += "  fmt.Print(`<html>\n"
-	expected += "`);if this {;fmt.Print(`\n"
+	expected += "import (\n"
+	expected += "  \"bytes\"\n"
+	expected += "  \"fmt\"\n"
+	expected += ")\n"
+	expected += "\n"
+	expected += "func templateName(locals templateNameLocals) []byte {\n"
+	expected += "  buf := bytes.NewBuffer(make([]byte, 0, 250))\n"
+	expected += "  fmt.Fprint(buf, `<html>\n"
+	expected += "`);if this {;fmt.Fprint(buf, `\n"
 	expected += "  <p>Hi</p>\n"
-	expected += "`);};fmt.Print(`\n"
+	expected += "`);};fmt.Fprint(buf, `\n"
 	expected += "</html>`);\n"
+	expected += "  return buf.Bytes()\n"
 	expected += "}\n"
 
 	if buf.String() != expected {
@@ -64,12 +78,19 @@ func TestPrintCodeOutput(t *testing.T) {
 	buf := bytes.NewBuffer(make([]byte, 0, 1000))
 	Convert("templateName", strings.NewReader(printCode), buf)
 
-	expected := "package template\n"
+	expected := "package templates\n"
 	expected += "\n"
-	expected += "func templateName() {\n"
-	expected += "  fmt.Print(`<html>\n"
-	expected += "  <p>`);fmt.Print(var);fmt.Print(`</p>\n"
+	expected += "import (\n"
+	expected += "  \"bytes\"\n"
+	expected += "  \"fmt\"\n"
+	expected += ")\n"
+	expected += "\n"
+	expected += "func templateName(locals templateNameLocals) []byte {\n"
+	expected += "  buf := bytes.NewBuffer(make([]byte, 0, 170))\n"
+	expected += "  fmt.Fprint(buf, `<html>\n"
+	expected += "  <p>`);fmt.Fprint(buf, var);fmt.Fprint(buf, `</p>\n"
 	expected += "</html>`);\n"
+	expected += "  return buf.Bytes()\n"
 	expected += "}\n"
 
 	if buf.String() != expected {
