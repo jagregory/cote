@@ -82,7 +82,7 @@ func outputWriter() io.WriteCloser {
 		return os.Stdout
 	}
 
-	w, err := os.Open(*outputFile)
+	w, err := os.Create(*outputFile)
 	if err != nil {
 		panic(err)
 	}
